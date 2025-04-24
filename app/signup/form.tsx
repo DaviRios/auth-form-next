@@ -1,6 +1,6 @@
 import { signup } from '@/app/signup/actions'
 
-export function SignUpForm(){
+export function SignUpForm() {
     return (
         <form action={signup}>
             <input name='name'></input>
