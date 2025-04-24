@@ -1,36 +1,59 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Next.js Auth Form — Best Practices with Server Components, Actions, Middleware, Zod & TypeScript
 
-## Getting Started
+This project is a simple and practical study of modern authentication in **Next.js**, focusing on the most up-to-date features of the framework, such as **Server Components**, **Server Actions**, **Middleware**, and validation with **Zod**.
 
-First, run the development server:
+---
+
+## Tech Stack
+
+- **Next.js (App Router)**
+- **React 18 Server Components**
+- **Server Actions & Route Handlers**
+- **Middleware for access control**
+- **Session-based Authentication**
+- **Zod for schema validation**
+- **TypeScript for type safety**
+- **Tailwind CSS for styling**
+
+---
+
+## Project Goals
+
+- Practice **safe and typed form validation** using Zod.
+- Apply **modern authentication patterns** with built-in Next.js tools.
+- Understand how **middleware, cookies, and server logic** work together.
+- Use **`useFormState`** and **`useFormStatus`** for user-friendly UX.
+
+---
+
+## Folder Structure
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+app/
+├── signup/
+│   ├── form.tsx       # Client component with form UI
+│   ├── actions.ts     # Server action with Zod validation
+│   └── page.tsx       # Signup route layout
+│
+├── _lib/              # Shared types and session helpers
+│   └── definitions.ts
+│
+├── middleware.ts      # Access control with cookies/session
+├── tailwind.config.js # Tailwind configuration
+
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Auth Flow
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- Diagram inspired by official Next.js documentation: Server Components, Actions, Middleware, Auth stages
 
-## Learn More
+## How to Run Locally
 
-To learn more about Next.js, take a look at the following resources:
+```bash
+npm install
+npm run dev
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Then open http://localhost:3000 in your browser.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
