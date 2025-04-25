@@ -1,21 +1,23 @@
 'use client'
 
 import { signup } from '@/app/signup/actions'
+import { useActionState } from 'react'
 
 export function SignUpForm() {
-    // const [state, action] = userActionState(signup)
+    const [state, action] = useActionState(signup, null, {})
 
     return (
-        <form action={signup}>
-            <input name='name'></input>
-            {/* verify erros in name,email and password and add to state */}
-            {/* {state?.erros?.name && <p>{state.errors.name}</p>}  */}
-            <input name='email'></input>
-            {/* {state?.erros?.email && <p>{state.errors.email}</p>} */}
-            <input name='password'></input>
-            {/* {state?.erros?.password && <p>{state.errors.password}</p>} */}
+        <form action={action}>
+            <input name='name' placeholder='Name' />
+            {state?.errors?.name && <p>{state.errors.name}</p>}
 
-            <button>SignUp</button>
+            <input name='email' placeholder='Email' />
+            {state?.errors?.email && <p>{state.errors.email}</p>}
+
+            <input name='password' type='password' placeholder='Password' />
+            {state?.errors?.password && <p>{state.errors.password}</p>}
+
+            <button type='submit'>Sign Up</button>
         </form>
     )
 }
