@@ -1,6 +1,6 @@
 'use server'
 
-import { SignupFormSchema } from '@app/_lib/definitions.ts'
+import { SignupFormSchema } from '@/app/_lib/definitions'
 
 export async function signup(state, formData) {
     //here I gonna validate the fields
