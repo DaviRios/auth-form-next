@@ -4,7 +4,7 @@ import { signup } from '@/app/signup/actions'
 import { useActionState } from 'react'
 
 export function SignUpForm() {
-    const [state, action] = useActionState(signup, null, {})
+    const [state, action] = useActionState(signup)
 
     return (
         <form action={action}>
