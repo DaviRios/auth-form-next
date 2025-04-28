@@ -3,11 +3,11 @@
 import { SignupFormSchema } from '@/app/_lib/definitions'
 
 export async function signup(state, formData) {
-    //here I gonna validate the fields
+    //here I  validate the fields
     const validationResult = SignupFormSchema.safeParse({
         name: formData.get('name'),
         email: formData.get('email'),
-        password: formData.get('password'),
+        password: formData.get('password'), // passwords returns more than 1 error, so use map to list all
     })
     if(!validationResult.success){
         return{
