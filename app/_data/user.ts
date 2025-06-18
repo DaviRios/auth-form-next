@@ -1,39 +1,57 @@
 import { verifySession } from "../_lib/session"
-import { db } from '@/drizzle/db'
-import { users } from '@/drizzle/schema'
+import { db } from '@/config/db'
+import { users } from '@/config/schema'
 import { taintUniqueValue } from "next/dist/server/app-render/rsc/taint"
 import { cache } from 'react'
+import { eq } from 'drizzle-orm';
 
-export const getUser = cache(async () => {
-    //verify user session
-    const session = await verifySession()
-    //fetch data
-    const data = await db.query.users.findMany({
-        where: eq(user.id, session.userId),
-    })
-    const user = data[0]
+export async function getUser() {
+  const session = await verifySession();
 
-    //now we filter using DTO
+  const data = await db.query.users.findMany({
+    where: eq(users.id, session.userId),
+    columns: {
+      name: true,
+      email: true,
+      password: true,
+      sessionToken: true,
+    },
+  });
 
-    const filteredUser = userDTO(user)
-    return filteredUser //return the filter to protect user
-
-})
-
-function userDTO(user){ //minimizes the chance of our team exposes fields
-    taintUniqueValue(
-        'Do not pass a user session token to the client.',
-        user,
-        user.session.token,
-    )
-    return{
-        name:users.name,
-        email:users.email,
-        session:users.session,
-        auditTrail: canViewAudit(user.auditTrail, user.role), //if user is admin
-    }
+  const user = data[0];
+  const filteredUser = userDTO(user);
+  return filteredUser;
 }
 
-function canViewAudit(auditTrail, role) {
-    return role === 'admin' ? auditTrail: null    
+
+type UserDTO = {
+  name: string;
+  email: string;
+};
+
+
+function userDTO(user: {
+  name: string | null;
+  email: string;
+  password: string;
+  sessionToken: string | null;
+}): UserDTO {
+  taintUniqueValue(
+    'Do not pass a user password or session token to the client.',
+    user,
+    user.password, // proteção extra
+  );
+  if (user.sessionToken) {
+    taintUniqueValue(
+      'Do not pass a user session token to the client.',
+      user,
+      user.sessionToken,
+    );
+  }
+
+
+  return {
+    name: user.name ?? 'Usuário',
+    email: user.email,
+  };
 }

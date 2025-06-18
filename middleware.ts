@@ -1,27 +1,22 @@
-import { type NextRequest, NextResponse } from "next/server";
-import { cookies } from "next/headers";
-import { decrypt } from "./app/_lib/session";
-import path from "path";
+import { NextResponse } from 'next/server';
+import type { NextRequest } from 'next/server';
 
-export default async function middleware(req: NextRequest) {
-    //create the path, the routes and the boolean to verify protection
-    const protectedRoutes = ['/dashboard']
-    const currentPath = req.nextUrl.pathname
-    const isProtectedRoute = protectedRoutes.includes(path)
+export async function middleware(req: NextRequest) {
+  const protectedRoutes = ['/dashboard'];
+  const currentPath = req.nextUrl.pathname;
 
-    if (isProtectedRoute) { //check valid session
-        const cookie = cookies().get('session')?.value
-        const session = await decrypt(cookie)
+  if (protectedRoutes.includes(currentPath)) {
+    const cookie = req.cookies.get('session')?.value;
 
-        //redirect user unvalid
-        if (!session?.userId) {
-            return NextResponse.redirect(new URL('/login', req.nextUrl))
-        }
-        //render route
-        return NextResponse.next()
+    if (!cookie) {
+      return NextResponse.redirect(new URL('/login', req.url));
     }
-}
 
-export const config = {
-    matcher: ['/((?!api|_next/static|_next/image).*)'],
+    // opcional: decodifique JWT aqui (usando libs compatíveis com edge runtime)
+    // mas evite usar libs que dependam de 'crypto' do Node
+
+    // se precisar consultar usuário ou validar token, faça isso em APIs/Server Actions, não no middleware
+  }
+
+  return NextResponse.next();
 }

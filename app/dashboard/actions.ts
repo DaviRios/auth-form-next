@@ -1,16 +1,19 @@
 'user server'
 
+import { db } from "@/config/db";
 import { verifySession } from "../_lib/session"
+import { users } from "@/config/schema"; 
+import { eq } from "drizzle-orm";
 
-export async function banUser() { //the great hammer of ban user
-    //verify user first(or u want to ban all? XD)
+export async function banUser() {
+  const session = await verifySession();
 
-    const session = await verifySession()
-    const role = session?.role
+  const user = await db.query.users.findFirst({
+    where: eq(users.id, session.userId), 
+  });
 
-    if(role !=='admin'){
-        return{ error: 'Unathorized'}
-    }
+  if (user?.role !== 'admin') {
+    return { error: 'Unauthorized' };
+  }
 
-    //lets actually ban
 }

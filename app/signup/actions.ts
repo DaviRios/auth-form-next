@@ -1,11 +1,13 @@
 'use server'
 
-import { SignupFormSchema } from '@/app/_lib/definitions'
+import { SignupFormSchema } from '../_lib/definitions'
 import bcrypt from 'bcrypt';
 import { createSession } from '../_lib/session';
+import { users } from '@/config/schema';
+import { db } from '@/config/db';
 
 
-export async function signup(state, formData) {
+export async function signup(state: any, formData: { get: (arg0: string) => any; }) {
     //here I  validate the fields
     const validationResult = SignupFormSchema.safeParse({
         name: formData.get('name'),
