@@ -23,12 +23,10 @@ export async function getUser() {
   return filteredUser;
 }
 
-
 type UserDTO = {
   name: string;
   email: string;
 };
-
 
 function userDTO(user: {
   name: string | null;
@@ -48,7 +46,6 @@ function userDTO(user: {
       user.sessionToken,
     );
   }
-
 
   return {
     name: user.name ?? 'Usuário',
